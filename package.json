@@ -1,35 +1,25 @@
 {
   "name": "@werbos/viz",
   "version": "0.0.1",
-  "description": "📊 Data visualization utilities for werbos.",
-  "main": "dist",
-  "repository": "https://github.com/cawfree/werbos-viz",
-  "author": "Alex Thomas (@cawfree) <hello@cawfree.com>",
+  "main": "index.js",
   "license": "MIT",
-  "private": false,
   "scripts": {
-    "build": "babel src --out-dir dist && uglifyjs dist/*.js -o dist/*.js",
-    "prettify": "yarn prettier --write \"**/*.js\"",
-    "test": "jest"
+    "start": "./node_modules/.bin/babel-node ./index.js"
   },
   "dependencies": {
-    "@nivo/api": "^0.61.2",
-    "@werbos/core": "../werbos-core/",
     "axios": "^0.19.2",
+    "chart.js": "^2.9.3",
     "open": "^7.0.2",
-    "type-check": "^0.3.2"
+    "react-chartjs-2": "^2.9.0",
+    "rippleware": "^0.0.21",
+    "sabrina": "^0.1.0-alpha.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
     "@babel/polyfill": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
-    "@babel/preset-react": "^7.8.3",
-    "@tensorflow/tfjs": "^1.5.2",
-    "husky": "^4.2.3",
-    "jest": "^25.1.0",
-    "prettier": "^1.19.1",
-    "rippleware": "^0.0.21",
-    "uglify-js": "^3.7.7"
+    "@babel/preset-react": "^7.8.3"
   }
 }
