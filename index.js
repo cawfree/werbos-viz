@@ -24,8 +24,7 @@ const requestLine = (title, data) => request(
   {
     _: 'Line',
     data: {
-      // TODO: assumes fixed length
-      labels: [...Array(Object.values(data)[0].data.length)]
+      labels: [...Array(Math.max(...Object.values(data).map(({ data: { length } }) => length)))]
         .map((_, i) => `${i}`),
       datasets: Object.entries(data)
         .map(
