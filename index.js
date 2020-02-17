@@ -6,6 +6,12 @@ import compose from "rippleware";
 import open from "open";
 import { typeCheck } from "type-check";
 
+const defaultOptions = Object.freeze(
+  {
+    title: undefined,
+  },
+);
+
 // TODO: Likely a function of config.
 const url = 'http://localhost:3000';
 
@@ -38,17 +44,17 @@ const requestLine = (title, data) => request(
   },
 );
 
-const handleTrainingResults = (input, { useMeta }) => {
+const handleTrainingResults = (options, input, { useMeta }) => {
   const { history: { loss, val_loss }} = input;
   useMeta(useMeta());
   // TODO: How to load the server initially?
   return sabrina(
-    { "react-chartjs-2": ["Doughnut", "Line"] },
+    { "react-chartjs-2": ["Line"] },
   )
     .then(() => open(url))
     .then(() => new Promise(resolve => setTimeout(resolve, 5000)))
     .then(() => requestLine(
-      'Training Results',
+      options.title || 'Training Results',
       Object
         .fromEntries(
           [
@@ -61,17 +67,23 @@ const handleTrainingResults = (input, { useMeta }) => {
     .then(() => input);
 };
 
-const viz = () => handle => [
-  handle('{params:{...},epoch:[Number],history:{...},...}', handleTrainingResults),
-  handle('*', (input, { useMeta }) => {
-    useMeta(useMeta());
-    console.warn(`🤷 Unable to visualize ${input}!`);
-    return input;
-  }),
-] && undefined;
+const handleDefault = (options, input, { useMeta }) => {
+  useMeta(useMeta());
+  console.warn(`🤷 Unable to visualize ${input}!`);
+  return input;
+};
+
+const viz = (options = defaultOptions) => handle => {
+  const opts = {
+    ...defaultOptions,
+    options,
+  };
+  handle('{params:{...},epoch:[Number],history:{...},...}', (input, hooks) => handleTrainingResults(opts, input, hooks));
+  handle('*', (input, hooks) => handleDefault(opts, input, hooks));
+};
 
 const app = compose()
-  .use(viz());
+  .use(viz({ title: 'ahhh!' }));
 
 app(
   {

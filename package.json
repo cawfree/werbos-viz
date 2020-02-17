@@ -1,11 +1,20 @@
 {
   "name": "@werbos/viz",
-  "version": "0.0.1",
+  "description": "📊 A data visualization handler for @werbos.",
+  "version": "0.0.1-alpha.0",
   "main": "index.js",
   "license": "MIT",
+  "author": "Alex Thomas (@cawfree) <hello@cawfree.com>",
   "scripts": {
     "start": "./node_modules/.bin/babel-node ./index.js"
   },
+  "keywords": [
+    "werbos",
+    "neural-network",
+    "deep-learning",
+    "graph",
+    "visualization"
+  ],
   "dependencies": {
     "axios": "^0.19.2",
     "chart.js": "^2.9.3",
