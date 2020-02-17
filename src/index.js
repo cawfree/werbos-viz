@@ -59,6 +59,9 @@ const ensureServerLoaded = () => axios({ method: 'get', url })
         "react-chartjs-2": ["Line"],
         "react-json-tree": [["default", "Json"]],
       },
+      {
+        title: '🧠 werbos',
+      },
     ),
   )
   .then(() => open(url))
