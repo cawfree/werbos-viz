@@ -1,4 +1,5 @@
 import "react-chartjs-2";
+import "react-json-tree";
 
 import axios from "axios";
 import sabrina from "sabrina";
@@ -44,15 +45,33 @@ const requestLine = (title, data) => request(
   },
 );
 
+const requestJson = (title, data) => request(
+  title,
+  {
+    _: 'Json',
+    style: {
+      width: '100%',
+      height: '100%',
+    },
+    data,
+  },
+);
+
+// TODO: Needs stateful handling.
+const ensureServerLoaded = () => sabrina(
+  {
+    "react-chartjs-2": ["Line"],
+    "react-json-tree": [["default", "Json"]],
+  },
+)
+  .then(() => open(url))
+  .then(() => new Promise(resolve => setTimeout(resolve, 5000)));
+
 const handleTrainingResults = (options, input, { useMeta }) => {
   const { history: { loss, val_loss }} = input;
   useMeta(useMeta());
   // TODO: How to load the server initially?
-  return sabrina(
-    { "react-chartjs-2": ["Line"] },
-  )
-    .then(() => open(url))
-    .then(() => new Promise(resolve => setTimeout(resolve, 5000)))
+  return ensureServerLoaded()
     .then(() => requestLine(
       options.title || 'Training Results',
       Object
@@ -67,10 +86,11 @@ const handleTrainingResults = (options, input, { useMeta }) => {
     .then(() => input);
 };
 
-const handleDefault = (options, input, { useMeta }) => {
+const handleDefault = ({ title }, input, { useMeta }) => {
   useMeta(useMeta());
-  console.warn(`🤷 Unable to visualize ${input}!`);
-  return input;
+  return ensureServerLoaded()
+    .then(() => requestJson(title || '🌳 Log', input))
+    .then(() => input);
 };
 
 const viz = (options = defaultOptions) => handle => {
@@ -78,7 +98,7 @@ const viz = (options = defaultOptions) => handle => {
     ...defaultOptions,
     options,
   };
-  handle('{params:{...},epoch:[Number],history:{...},...}', (input, hooks) => handleTrainingResults(opts, input, hooks));
+  //handle('{params:{...},epoch:[Number],history:{...},...}', (input, hooks) => handleTrainingResults(opts, input, hooks));
   handle('*', (input, hooks) => handleDefault(opts, input, hooks));
 };
 
