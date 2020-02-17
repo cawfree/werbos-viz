@@ -11,7 +11,7 @@ jest.setTimeout(24 * 60 * 60 * 1000);
 
 it("should be capable of providing specific and general data", async () => {
   const app = compose({ sync: false })
-    .use(viz({ title: 'ahhh!' }));
+    .use(viz());
 
   await app({ hi: 'world' });
   await app(trainingData);

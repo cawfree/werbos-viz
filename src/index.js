@@ -96,7 +96,7 @@ const handleDefault = ({ title }, input, { useMeta }) => {
 export const viz = (options = defaultOptions) => handle => {
   const opts = {
     ...defaultOptions,
-    options,
+    ...options,
   };
   handle('{params:{...},epoch:[Number],history:{...},...}', (input, hooks) => handleTrainingResults(opts, input, hooks));
   handle('*', (input, hooks) => handleDefault(opts, input, hooks));
