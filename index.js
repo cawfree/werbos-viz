@@ -69,7 +69,7 @@ const handleTrainingResults = (options, input, { useMeta }) => {
   // TODO: How to load the server initially?
   return ensureServerLoaded()
     .then(() => requestLine(
-      options.title || 'Training Results',
+      options.title || '📉  Training Results',
       Object
         .fromEntries(
           [
