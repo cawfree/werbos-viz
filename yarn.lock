@@ -5266,10 +5266,10 @@ rippleware@^0.0.21:
     klona "^1.1.1"
     type-check "^0.3.2"
 
-sabrina@^0.1.0-alpha.4:
-  version "0.1.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/sabrina/-/sabrina-0.1.0-alpha.4.tgz#c05e3e5ad8d696d42cdb5df6bc2995d5228edbe3"
-  integrity sha512-iK0qadknllH9q4KRdiUqc50FKOC4kncwygSfpYI4accvblbLA1HR2nTvrIBQ4gWlWc6VLQzxlh3SFSXPIQvLIA==
+sabrina@^0.1.0-alpha.5:
+  version "0.1.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/sabrina/-/sabrina-0.1.0-alpha.5.tgz#6af2a61967951e9a18227966339a78385a5ab695"
+  integrity sha512-l4IfABHoDWIJOXb8NuqW7CkjAJMNJVt0WiKaYjuCDwVdXKcUfWNCCGzCGOGdpQtKmOX5MjITLKBUjhccli6znw==
   dependencies:
     "@babel/cli" "^7.8.4"
     "@babel/core" "^7.8.4"

@@ -49,10 +49,6 @@ const requestJson = (title, data) => request(
   title,
   {
     _: 'Json',
-    style: {
-      width: '100%',
-      height: '100%',
-    },
     data,
   },
 );
@@ -98,7 +94,7 @@ const viz = (options = defaultOptions) => handle => {
     ...defaultOptions,
     options,
   };
-  //handle('{params:{...},epoch:[Number],history:{...},...}', (input, hooks) => handleTrainingResults(opts, input, hooks));
+  handle('{params:{...},epoch:[Number],history:{...},...}', (input, hooks) => handleTrainingResults(opts, input, hooks));
   handle('*', (input, hooks) => handleDefault(opts, input, hooks));
 };
 
