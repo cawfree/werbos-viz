@@ -4,6 +4,7 @@ import "react-json-tree";
 import axios from "axios";
 import sabrina from "sabrina";
 import open from "open";
+import chalk from "chalk";
 import { typeCheck } from "type-check";
 
 const defaultOptions = Object.freeze({
@@ -51,16 +52,21 @@ const requestJson = (title, data) =>
 
 const ensureServerLoaded = () =>
   axios({ method: "get", url })
+    .then(() => undefined)
     .catch(e =>
-      sabrina(
-        {
-          "react-chartjs-2": ["Line"],
-          "react-json-tree": [["default", "Json"]]
-        },
-        { title: "🧠 werbos" }
-      ).then(() => open(url))
-    )
-    .then(() => new Promise(resolve => setTimeout(resolve, 5000)));
+      Promise.resolve()
+        .then(() => console.log(chalk.blue("[@werbos/viz] Starting server...")))
+        .then(() =>
+          sabrina(
+            {
+              "react-chartjs-2": ["Line"],
+              "react-json-tree": [["default", "Json"]]
+            },
+            { title: "🧠 werbos" }
+          )
+        )
+        .then(() => open(url))
+    );
 
 const handleTrainingResults = (options, input, { useMeta }) => {
   const {
