@@ -36,21 +36,20 @@ const requestLines = (title, [...data]) =>
       labels: [
         ...Array(
           // TODO: fix this (should account for multiple datasets now, as opposed to a single line)
-          Math.max(...Object.values(data[0]).map(({ data: { length } }) => length))
+          Math.max(
+            ...Object.values(data[0]).map(({ data: { length } }) => length)
+          )
         )
       ].map((_, i) => `${i}`),
       datasets: [].concat(
-        ...data.map(
-          (datum, i) => Object.entries(datum)
-            .map(
-              ([label, { data, backgroundColor }]) => ({
-                label: `${label} #${i}`,
-                data,
-                backgroundColor,
-              }),
-            ),
-        ),
-      ),
+        ...data.map((datum, i) =>
+          Object.entries(datum).map(([label, { data, backgroundColor }]) => ({
+            label: `${label} #${i}`,
+            data,
+            backgroundColor
+          }))
+        )
+      )
     }
   });
 
@@ -65,7 +64,11 @@ const ensureServerLoaded = () =>
     .then(() => undefined)
     .catch(e =>
       Promise.resolve()
-        .then(() => console.log(`${chalk.blue('[@werbos/viz]')} ${chalk.yellow('Launching... 🚀')}`))
+        .then(() =>
+          console.log(
+            `${chalk.blue("[@werbos/viz]")} ${chalk.yellow("Launching... 🚀")}`
+          )
+        )
         .then(() =>
           sabrina(
             {
@@ -75,13 +78,23 @@ const ensureServerLoaded = () =>
             { title: "🧠 werbos" }
           )
         )
-        .then(() => console.log(`${chalk.blue('[@werbos/viz]')} ${chalk.green('Server ready.')}`))
+        .then(() =>
+          console.log(
+            `${chalk.blue("[@werbos/viz]")} ${chalk.green("Server ready.")}`
+          )
+        )
         .then(() => new Promise(resolve => setTimeout(resolve, 3000)))
         .then(() => open(url))
     );
 
-const trainingDataToLine = (trainingData, lossColor = "#2d5ba6", valLossColor = "#a8328d") => {
-  const { history: { loss, val_loss } } = trainingData;
+const trainingDataToLine = (
+  trainingData,
+  lossColor = "#2d5ba6",
+  valLossColor = "#a8328d"
+) => {
+  const {
+    history: { loss, val_loss }
+  } = trainingData;
   return Object.fromEntries(
     [
       !!typeCheck("[Number]", loss) && [
@@ -100,10 +113,9 @@ const handleTrainingResults = (options, input, { useMeta }) => {
   useMeta(useMeta());
   return ensureServerLoaded()
     .then(() =>
-      requestLines(
-        options.title || "📉  Training Results",
-        [trainingDataToLine(input)],
-      )
+      requestLines(options.title || "📉  Training Results", [
+        trainingDataToLine(input)
+      ])
     )
     .then(() => input);
 };
@@ -111,11 +123,11 @@ const handleTrainingResults = (options, input, { useMeta }) => {
 const handleKfoldTrainingResults = (options, input, { useMeta }) => {
   useMeta(useMeta());
   return ensureServerLoaded()
-    .then(
-      () => requestLines(
+    .then(() =>
+      requestLines(
         options.title || `🧪 K-Fold Training Results (k=${input.length})`,
-        input.map(e => trainingDataToLine(e)),
-      ),
+        input.map(e => trainingDataToLine(e))
+      )
     )
     .then(() => input);
 };

@@ -10,8 +10,7 @@ import { viz } from "../src";
 jest.setTimeout(24 * 60 * 60 * 1000);
 
 it("should be capable of providing specific and general data", async () => {
-  const app = compose()
-    .use(viz());
+  const app = compose().use(viz());
 
   await app({ hi: "world" });
   await app(trainingData);
