@@ -7,6 +7,10 @@ import open from "open";
 import chalk from "chalk";
 import { typeCheck } from "type-check";
 
+// TODO: Need to register these as genuine shapes within @werbos/core.
+const trainingShape = "{params:{...},epoch:[Number],history:{...},...}";
+const kfoldTrainingShape = `[${trainingShape}]`;
+
 const defaultOptions = Object.freeze({
   title: undefined
 });
@@ -96,6 +100,18 @@ const handleTrainingResults = (options, input, { useMeta }) => {
     .then(() => input);
 };
 
+const handleKfoldTrainingResults = (opts, input, { useMeta }) => {
+  useMeta(useMeta());
+  return ensureServerLoaded()
+    .then(
+      () => requestJson(
+        'k fold training data (should say k=)',
+        input,
+      ),
+    )
+    .then(() => input);
+};
+
 const handleDefault = ({ title }, input, { useMeta }) => {
   useMeta(useMeta());
   return ensureServerLoaded()
@@ -108,8 +124,11 @@ export const viz = (options = defaultOptions) => handle => {
     ...defaultOptions,
     ...options
   };
-  handle("{params:{...},epoch:[Number],history:{...},...}", (input, hooks) =>
+  handle(trainingShape, (input, hooks) =>
     handleTrainingResults(opts, input, hooks)
+  );
+  handle(kfoldTrainingShape, (input, hooks) =>
+    handleKfoldTrainingResults(opts, input, hooks)
   );
   handle("*", (input, hooks) => handleDefault(opts, input, hooks));
 };
