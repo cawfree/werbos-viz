@@ -55,7 +55,7 @@ const ensureServerLoaded = () =>
     .then(() => undefined)
     .catch(e =>
       Promise.resolve()
-        .then(() => console.log(chalk.blue("[@werbos/viz] Starting server...")))
+        .then(() => console.log(`${chalk.blue('[@werbos/viz]')} ${chalk.yellow('Launching... 🚀')}`))
         .then(() =>
           sabrina(
             {
@@ -65,6 +65,8 @@ const ensureServerLoaded = () =>
             { title: "🧠 werbos" }
           )
         )
+        .then(() => console.log(`${chalk.blue('[@werbos/viz]')} ${chalk.green('Server ready.')}`))
+        .then(() => new Promise(resolve => setTimeout(resolve, 3000)))
         .then(() => open(url))
     );
 

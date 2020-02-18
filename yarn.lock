@@ -2479,7 +2479,7 @@ data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-deasync@^0.1.14, deasync@^0.1.19:
+deasync@^0.1.14:
   version "0.1.19"
   resolved "https://registry.yarnpkg.com/deasync/-/deasync-0.1.19.tgz#e7ea89fcc9ad483367e8a48fe78f508ca86286e8"
   integrity sha512-oh3MRktfnPlLysCPpBpKZZzb4cUC/p0aA3SyRGp15lN30juJBTo/CiD0d4fR+f1kBtUQoJj1NE9RPNWQ7BQ9Mg==
@@ -6518,12 +6518,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rippleware@^0.0.21:
-  version "0.0.21"
-  resolved "https://registry.yarnpkg.com/rippleware/-/rippleware-0.0.21.tgz#36db094a7ca6835ff605c11d2eed21abf959afc0"
-  integrity sha512-GP69RFFIDkwsSpTpm8LbIn0eAJX4jIH/otKRdGdNuDLYfsNViM4pY27AI0p/hw6j6G3AJsJEy1703ah7OVRJZw==
+rippleware@^0.1.0-alpha.2:
+  version "0.1.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/rippleware/-/rippleware-0.1.0-alpha.2.tgz#6ac5751d56c512e39bfd93cdf278953d44bb4fa0"
+  integrity sha512-RR6W5xwcKIb33pTZsYEpC4Fm3gBPvXdwpwjcOQPZtXz/g7uodYDVKxp6OmewltdE36iUuaTH6BvsrvOpc7uj2Q==
   dependencies:
-    deasync "^0.1.19"
     deep-equal "^2.0.1"
     jsonpath "^1.0.2"
     klona "^1.1.1"
