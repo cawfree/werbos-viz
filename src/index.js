@@ -1,94 +1,103 @@
+import "react-chartjs-2";
+import "react-json-tree";
+
 import axios from "axios";
+import sabrina from "sabrina";
 import open from "open";
-import { typeCheck } from  "type-check";
+import { typeCheck } from "type-check";
 
-const defaultData = Object.freeze({
-  width: 768,
-  height: 768,
-});
-
-const defaultOptions = Object.freeze({
-  
-});
-
-const requestGraph = (method, data = defaultData) =>
-  axios({
-    url: `http://localhost:3030${method}`,
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    },
-    data: {
-      ...defaultData,
-      ...data
-    }
-  })
-    .then(({ data }) => data)
-    .catch(({ response: { data: { errors } } }) =>
-      Promise.reject(new Error(errors))
-    );
-
-const requestLine = (data, { ...extras }) => requestGraph(
-  "/charts/line",
+const defaultOptions = Object.freeze(
   {
-    data,
-    ...extras,
+    title: undefined,
   },
 );
 
-const openChart = url => Promise
-  .resolve()
-  .then(() => console.log(`📊 ${url}`))
-  .then(() => open(url));
+// TODO: Likely a function of config.
+const url = 'http://localhost:3000';
 
-export const viz = (options = defaultOptions) => handle => [
-  /* training history */
-  handle("{params:{...},epoch:[Number],history:{...},...}", (input, { useMeta }) => {
-    useMeta(useMeta());
-    const { epoch, history: { loss, val_loss } } = input;
-    const [hasLoss, hasValLoss] = [
-      typeCheck("[Number]", loss),
-      typeCheck("[Number]", val_loss),
-    ];
-    return requestLine(
-      [
-        hasLoss && (
-          {
-            id: 'loss',
-            data: loss.map((y, x) => ({ x, y })),
-          }
+const request = (title, children) => axios({
+  headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+  url: `${url}/pane`,
+  method: 'post',
+  data: {
+    title,
+    children,
+  },
+});
+
+const requestLine = (title, data) => request(
+  title,
+  {
+    _: 'Line',
+    data: {
+      labels: [...Array(Math.max(...Object.values(data).map(({ data: { length } }) => length)))]
+        .map((_, i) => `${i}`),
+      datasets: Object.entries(data)
+        .map(
+          ([label, { data, backgroundColor }]) => ({
+            label,
+            data,
+            backgroundColor,
+          }),
         ),
-        hasValLoss && (
-          {
-            id: 'val_loss',
-            data: val_loss.map((y, x) => ({ x, y })),
-          }
-        ),
-      ]
-        .filter(e => !!e),
+    },
+  },
+);
+
+const requestJson = (title, data) => request(
+  title,
+  {
+    _: 'Json',
+    data,
+  },
+);
+
+const ensureServerLoaded = () => axios({ method: 'get', url })
+  .catch(
+    e => sabrina(
       {
-        axisLeft: {
-          legend: 'loss',
-          legendOffset: -12,
-        },
-        axisBottom: {
-          legend: 'epochs',
-          legendOffset: -12,
-        },
-        enableArea: true,
-        colors: [
-          hasLoss && 'blue',
-          hasValLoss && 'firebrick',
-        ].filter(e => !!e),
+        "react-chartjs-2": ["Line"],
+        "react-json-tree": [["default", "Json"]],
       },
-    )
-      .then(({ url }) => openChart(url))
-      .then(() => input);
-  }),
-  handle("*", (input, { useMeta }) => {
-    console.error(`❌ Unable to visualize ${input}.`);
-    useMeta(useMeta());
-    return input;
-  }),
-] && undefined;
+      {
+        title: '🧠 werbos',
+      },
+    ),
+  )
+  .then(() => open(url))
+  .then(() => new Promise(resolve => setTimeout(resolve, 5000)));
+
+const handleTrainingResults = (options, input, { useMeta }) => {
+  const { history: { loss, val_loss }} = input;
+  useMeta(useMeta());
+  // TODO: How to load the server initially?
+  return ensureServerLoaded()
+    .then(() => requestLine(
+      options.title || '📉  Training Results',
+      Object
+        .fromEntries(
+          [
+            (!!typeCheck('[Number]', loss)) && ['loss', { data: loss, backgroundColor: '#2d5ba6' }],
+            (!!typeCheck('[Number]', val_loss)) && ['val_loss', { data: val_loss, backgroundColor: '#a8328d' }],
+          ]
+            .filter(e => !!e),
+        ),
+    ))
+    .then(() => input);
+};
+
+const handleDefault = ({ title }, input, { useMeta }) => {
+  useMeta(useMeta());
+  return ensureServerLoaded()
+    .then(() => requestJson(title || '🌳 Log', input))
+    .then(() => input);
+};
+
+export const viz = (options = defaultOptions) => handle => {
+  const opts = {
+    ...defaultOptions,
+    ...options,
+  };
+  handle('{params:{...},epoch:[Number],history:{...},...}', (input, hooks) => handleTrainingResults(opts, input, hooks));
+  handle('*', (input, hooks) => handleDefault(opts, input, hooks));
+};
