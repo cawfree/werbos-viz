@@ -2,11 +2,12 @@
   "name": "@werbos/viz",
   "description": "📊 A data visualization handler for @werbos.",
   "version": "0.0.1-alpha.0",
-  "main": "index.js",
+  "main": "dist",
   "license": "MIT",
   "author": "Alex Thomas (@cawfree) <hello@cawfree.com>",
   "scripts": {
-    "start": "./node_modules/.bin/babel-node ./index.js",
+    "build": "babel src --out-dir dist && uglifyjs dist/*.js -o dist/*.js",
+    "prettify": "yarn prettier --write \"**/*.js\"",
     "test": "jest"
   },
   "keywords": [
@@ -32,6 +33,8 @@
     "@babel/polyfill": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-react": "^7.8.3",
-    "jest": "^25.1.0"
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "uglify-js": "^3.7.7"
   }
 }
