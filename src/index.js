@@ -59,18 +59,15 @@ const ensureServerLoaded = () => axios({ method: 'get', url })
         "react-chartjs-2": ["Line"],
         "react-json-tree": [["default", "Json"]],
       },
-      {
-        title: '🧠 werbos',
-      },
-    ),
+      { title: '🧠 werbos' },
+    )
+    .then(() => open(url)),
   )
-  .then(() => open(url))
   .then(() => new Promise(resolve => setTimeout(resolve, 5000)));
 
 const handleTrainingResults = (options, input, { useMeta }) => {
   const { history: { loss, val_loss }} = input;
   useMeta(useMeta());
-  // TODO: How to load the server initially?
   return ensureServerLoaded()
     .then(() => requestLine(
       options.title || '📉  Training Results',
