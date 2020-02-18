@@ -29,22 +29,28 @@ const request = (title, children) =>
     }
   });
 
-const requestLine = (title, data) =>
+const requestLines = (title, [...data]) =>
   request(title, {
     _: "Line",
     data: {
       labels: [
         ...Array(
-          Math.max(...Object.values(data).map(({ data: { length } }) => length))
+          // TODO: fix this (should account for multiple datasets now, as opposed to a single line)
+          Math.max(...Object.values(data[0]).map(({ data: { length } }) => length))
         )
       ].map((_, i) => `${i}`),
-      datasets: Object.entries(data).map(
-        ([label, { data, backgroundColor }]) => ({
-          label,
-          data,
-          backgroundColor
-        })
-      )
+      datasets: [].concat(
+        ...data.map(
+          (datum, i) => Object.entries(datum)
+            .map(
+              ([label, { data, backgroundColor }]) => ({
+                label: `${label} #${i}`,
+                data,
+                backgroundColor,
+              }),
+            ),
+        ),
+      ),
     }
   });
 
@@ -74,39 +80,41 @@ const ensureServerLoaded = () =>
         .then(() => open(url))
     );
 
+const trainingDataToLine = (trainingData, lossColor = "#2d5ba6", valLossColor = "#a8328d") => {
+  const { history: { loss, val_loss } } = trainingData;
+  return Object.fromEntries(
+    [
+      !!typeCheck("[Number]", loss) && [
+        "loss",
+        { data: loss, backgroundColor: lossColor }
+      ],
+      !!typeCheck("[Number]", val_loss) && [
+        "val_loss",
+        { data: val_loss, backgroundColor: valLossColor }
+      ]
+    ].filter(e => !!e)
+  );
+};
+
 const handleTrainingResults = (options, input, { useMeta }) => {
-  const {
-    history: { loss, val_loss }
-  } = input;
   useMeta(useMeta());
   return ensureServerLoaded()
     .then(() =>
-      requestLine(
+      requestLines(
         options.title || "📉  Training Results",
-        Object.fromEntries(
-          [
-            !!typeCheck("[Number]", loss) && [
-              "loss",
-              { data: loss, backgroundColor: "#2d5ba6" }
-            ],
-            !!typeCheck("[Number]", val_loss) && [
-              "val_loss",
-              { data: val_loss, backgroundColor: "#a8328d" }
-            ]
-          ].filter(e => !!e)
-        )
+        [trainingDataToLine(input)],
       )
     )
     .then(() => input);
 };
 
-const handleKfoldTrainingResults = (opts, input, { useMeta }) => {
+const handleKfoldTrainingResults = (options, input, { useMeta }) => {
   useMeta(useMeta());
   return ensureServerLoaded()
     .then(
-      () => requestJson(
-        'k fold training data (should say k=)',
-        input,
+      () => requestLines(
+        options.title || `🧪 K-Fold Training Results (k=${input.length})`,
+        input.map(e => trainingDataToLine(e)),
       ),
     )
     .then(() => input);
