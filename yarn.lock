@@ -6518,10 +6518,10 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rippleware@^0.1.0-alpha.2:
-  version "0.1.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/rippleware/-/rippleware-0.1.0-alpha.2.tgz#6ac5751d56c512e39bfd93cdf278953d44bb4fa0"
-  integrity sha512-RR6W5xwcKIb33pTZsYEpC4Fm3gBPvXdwpwjcOQPZtXz/g7uodYDVKxp6OmewltdE36iUuaTH6BvsrvOpc7uj2Q==
+rippleware@^0.1.0-alpha.3:
+  version "0.1.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/rippleware/-/rippleware-0.1.0-alpha.3.tgz#33cedb02b7ff7a3551f12ff658b11501a7bd2b29"
+  integrity sha512-Gozv1+nPea2G2Wyni/9PApgPjkcoU7hocZ3ld5HPs3TTtzUDtCv6zHlSEmhEC194Ni2uNHQf/i4VY8xjOUpeOw==
   dependencies:
     deep-equal "^2.0.1"
     jsonpath "^1.0.2"
