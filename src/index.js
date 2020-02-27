@@ -139,16 +139,14 @@ const handleDefault = ({ title }, input, { useMeta }) => {
     .then(() => input);
 };
 
-export const viz = (options = defaultOptions) => handle => {
+export const viz = (options = defaultOptions) => {
   const opts = {
     ...defaultOptions,
     ...options
   };
-  handle(trainingShape, (input, hooks) =>
-    handleTrainingResults(opts, input, hooks)
-  );
-  handle(kfoldTrainingShape, (input, hooks) =>
-    handleKfoldTrainingResults(opts, input, hooks)
-  );
-  handle("*", (input, hooks) => handleDefault(opts, input, hooks));
+  return [
+    [trainingShape, (input, hooks) => handleTrainingResults(opts, input, hooks)],
+    [kfoldTrainingShape, (input, hooks) => handleKfoldTrainingResults(opts, input, hooks)],
+    ["*", (input, hooks) => handleDefault(opts, input, hooks)],
+  ];
 };
