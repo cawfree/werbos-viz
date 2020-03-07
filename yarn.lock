@@ -4596,11 +4596,6 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-klona@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/klona/-/klona-1.1.1.tgz#8b1e93808ef602a0cc4fb438ba72eb00594e9802"
-  integrity sha512-o/QDZouW8bt6cejtMQhw3qyqi4aTlrB7sbqzQ8+PdI/qJ3WMbmSOA//4ClIevCQp0DPUU9l1pxGRcGMkkxb8TA==
-
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
@@ -6518,14 +6513,13 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rippleware@^0.2.0-alpha.11:
-  version "0.2.0-alpha.11"
-  resolved "https://registry.yarnpkg.com/rippleware/-/rippleware-0.2.0-alpha.11.tgz#b27690aed5b6450da79169077db3fcbd395096fa"
-  integrity sha512-CrRYYEcmeOPpXa6WZK9CWiwaXxxIMwtc+mkwJsQlXqnfZmpyWN6hg4O7upMpxsB+szRUglMuq0J9vSPv9yGoSQ==
+rippleware@^0.2.0-alpha.21:
+  version "0.2.0-alpha.21"
+  resolved "https://registry.yarnpkg.com/rippleware/-/rippleware-0.2.0-alpha.21.tgz#d2b2147cff00dd0964a1354af9bd5efa12c8b020"
+  integrity sha512-Q5wJN6oUN9tN6if4D2hYqT3g/cedcBmkVzCD29XPKNQXglrhWY/Ba/okzxagdI4HjfhrmLb8+WIR58oIWWNpYQ==
   dependencies:
     deep-equal "^2.0.1"
     jsonpath "^1.0.2"
-    klona "^1.1.1"
     nanoid "^2.1.11"
     type-check "^0.3.2"
 
