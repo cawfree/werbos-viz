@@ -18,13 +18,14 @@
     "visualization"
   ],
   "dependencies": {
+    "@werbos/core": "../werbos-core/",
     "axios": "^0.19.2",
     "chalk": "^3.0.0",
     "chart.js": "^2.9.3",
     "open": "^7.0.2",
     "react-chartjs-2": "^2.9.0",
     "react-json-tree": "^0.11.2",
-    "rippleware": "^0.2.0-alpha.21",
+    "rippleware": "^0.2.0-alpha.31",
     "sabrina": "^0.1.0-alpha.9"
   },
   "devDependencies": {
